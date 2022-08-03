@@ -22,6 +22,7 @@ from PyQt5.QtCore import QTimer
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String
 
+
 class Ui_ControlWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -157,7 +158,7 @@ class Ui_ControlWindow(QWidget):
         self.cmdvel.angular.y = 0
         self.cmdvel.angular.z = 0
         self.pub.publish(self.cmdvel)
-        
+
     def on_timeout_3(self):
         self.timer_3.start(100)
         self.cmdvel.linear.x = 0
@@ -249,7 +250,6 @@ class Ui_ControlWindow(QWidget):
 
 
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     ControlWindow = QtWidgets.QMainWindow()
     ui = Ui_ControlWindow()
