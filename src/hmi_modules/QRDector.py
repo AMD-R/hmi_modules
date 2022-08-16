@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+from PyQt5 import QtWidgets, QtGui, QtCore
+import cv2
+
+
+class QRDetector(QtWidgets.QWidget):
+    """QRCode Detector widget.
+    Parameters
+    ----------
+    Parent: QWidget = None
+        Parent widget of the widget
+    """
+    detected: QtCore.pyqtBoundSignal = QtCore.pyqtSignal(str)
+    started: QtCore.pyqtBoundSignal = QtCore.pyqtSignal(int)
+    stopped: QtCore.pyqtBoundSignal = QtCore.pyqtSignal()
+
+    def __init__(self, parent: QtWidgets.QWidget = None):
+        super().__init__(parent)
+        # OpenCV variables
+        self.camera = cv2.VideoCapture()
+        self.qr_reader = cv2.QRCodeDetector()
+
+        # Display
+        layout = QtWidgets.QVBoxLayout(self)
+        self.image = QtWidgets.QLabel(self)
+        self.image.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.image)
+
+        # Starting Capture
+        self.start()
+
+    def timerEvent(self, event: QtCore.QTimerEvent) -> None:
+        """Capture image and displaying it."""
+        # Getting captured image
+        _, img = self.camera.read()
+        # Detect and decoding QR Code
+        ret_qr, _, _ = self.qr_reader.detectAndDecode(img)
+        # Setting Label
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        pixmap = QtGui.QImage(img, img.shape[1], img.shape[0],
+                              QtGui.QImage.Format_RGB888)
+        self.image.setPixmap(QtGui.QPixmap.fromImage(pixmap))
+
+        # Emmiting dectected signal
+        if ret_qr is not None:
+            self.detected.emit(ret_qr)
+
+    def resizeEvent(self, event: QtGui.QResizeEvent) -> None:
+        """Resizing Capture Resolution when widget resizes."""
+        self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.width())
+        self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height())
+
+    @QtCore.pyqtSlot()
+    def start(self, index: int = 0, rate: int = 10):
+        """Starts the QRCode Detection.
+        Parameters
+        ----------
+        index: int
+            id of the video capturing device to open.
+        rate: int
+            Refresh rate of camera capture in ms.
+        """
+        self.camera.open(index)
+        self.timer = self.startTimer(rate)
+        self.started.emit(index)
+
+    @QtCore.pyqtSlot()
+    def stop(self):
+        """Stops the QRCode Detection."""
+        self.camera.close()
+        self.killTimer(self.timer)
+        self.stopped.emit()
