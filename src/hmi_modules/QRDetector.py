@@ -68,6 +68,6 @@ class QRDetector(QtWidgets.QWidget):
     @QtCore.pyqtSlot()
     def stop(self) -> None:
         """Stops the QRCode Detection."""
-        self.camera.close()
+        self.camera.release()
         self.killTimer(self.timer)
         self.stopped.emit()
