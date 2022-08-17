@@ -72,3 +72,17 @@ class QRDetector(QtWidgets.QWidget):
         self.killTimer(self.timer)
         self.image.setText("No Feed")
         self.stopped.emit()
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+
+    window = QtWidgets.QMainWindow()
+    detector = QRDetector(window)
+    window.setCentralWidget(detector)
+    window.show()
+
+    QtCore.QTimer.singleShot(5000, detector.stop)
+
+    sys.exit(app.exec_())
