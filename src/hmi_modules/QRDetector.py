@@ -22,7 +22,7 @@ class QRDetector(QtWidgets.QWidget):
 
         # Display
         layout = QtWidgets.QVBoxLayout(self)
-        self.image = QtWidgets.QLabel(self)
+        self.image = QtWidgets.QLabel("No Feed", self)
         self.image.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.image)
 
@@ -70,4 +70,5 @@ class QRDetector(QtWidgets.QWidget):
         """Stops the QRCode Detection."""
         self.camera.release()
         self.killTimer(self.timer)
+        self.image.setText("No Feed")
         self.stopped.emit()
