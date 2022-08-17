@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from PyQt5 import QtWidgets, QtGui, QtCore
 import cv2
+import numpy
 
 
 class QRDetector(QtWidgets.QWidget):
@@ -17,12 +18,12 @@ class QRDetector(QtWidgets.QWidget):
     def __init__(self, parent: QtWidgets.QWidget = None, start: bool = True):
         super().__init__(parent)
         # OpenCV variables
-        self.camera = cv2.VideoCapture()
-        self.qr_reader = cv2.QRCodeDetector()
+        self.camera: cv2.VideoCapture = cv2.VideoCapture()
+        self.qr_reader: cv2.QRCodeDetector = cv2.QRCodeDetector()
 
         # Display
-        layout = QtWidgets.QVBoxLayout(self)
-        self.image = QtWidgets.QLabel("No Feed", self)
+        layout: QtWidgets.QVBoxLayout = QtWidgets.QVBoxLayout(self)
+        self.image: QtWidgets.QLabel = QtWidgets.QLabel("No Feed", self)
         self.image.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.image)
 
@@ -37,9 +38,9 @@ class QRDetector(QtWidgets.QWidget):
         # Detect and decoding QR Code
         ret_qr, _, _ = self.qr_reader.detectAndDecode(img)
         # Setting Label
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        pixmap = QtGui.QImage(img, img.shape[1], img.shape[0],
-                              QtGui.QImage.Format_RGB888)
+        img: numpy.ndarray = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        pixmap: QtGui.QImage = QtGui.QImage(img, img.shape[1], img.shape[0],
+                                            QtGui.QImage.Format_RGB888)
         self.image.setPixmap(QtGui.QPixmap.fromImage(pixmap))
 
         # Emmiting dectected signal
@@ -62,7 +63,7 @@ class QRDetector(QtWidgets.QWidget):
             Refresh rate of camera capture in ms.
         """
         self.camera.open(index)
-        self.timer = self.startTimer(rate)
+        self.timer: int = self.startTimer(rate)
         self.started.emit(index)
 
     @QtCore.pyqtSlot()
