@@ -14,7 +14,7 @@ class QRDetector(QtWidgets.QWidget):
     started: QtCore.pyqtBoundSignal = QtCore.pyqtSignal(int)
     stopped: QtCore.pyqtBoundSignal = QtCore.pyqtSignal()
 
-    def __init__(self, parent: QtWidgets.QWidget = None):
+    def __init__(self, parent: QtWidgets.QWidget = None, start: bool = True):
         super().__init__(parent)
         # OpenCV variables
         self.camera = cv2.VideoCapture()
@@ -27,7 +27,8 @@ class QRDetector(QtWidgets.QWidget):
         layout.addWidget(self.image)
 
         # Starting Capture
-        self.start()
+        if start:
+            self.start()
 
     def timerEvent(self, event: QtCore.QTimerEvent) -> None:
         """Capture image and displaying it."""
@@ -51,7 +52,7 @@ class QRDetector(QtWidgets.QWidget):
         self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height())
 
     @QtCore.pyqtSlot()
-    def start(self, index: int = 0, rate: int = 10):
+    def start(self, index: int = 0, rate: int = 10) -> None:
         """Starts the QRCode Detection.
         Parameters
         ----------
@@ -65,7 +66,7 @@ class QRDetector(QtWidgets.QWidget):
         self.started.emit(index)
 
     @QtCore.pyqtSlot()
-    def stop(self):
+    def stop(self) -> None:
         """Stops the QRCode Detection."""
         self.camera.close()
         self.killTimer(self.timer)
