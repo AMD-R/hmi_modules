@@ -1,36 +1,21 @@
 #!/usr/bin/env python3
-from fileinput import close
 import rospy
-import time
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt, QTimer
-from sympy import maximum
 
-from fcntl import DN_DELETE
-from pickle import TRUE
 import sys
-from threading import Timer
-import time
 from tokenize import String
 
-from sympy import false, true
-import rospy
-
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QTimer
 from geometry_msgs.msg import Twist
-from std_msgs.msg import String
 
 
-class Ui_ControlWindow(QWidget):
+class Ui_ControlWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.counter = 0
-        self.timer = QTimer()
-        self.timer_2 = QTimer()
-        self.timer_3 = QTimer()
-        self.timer_4 = QTimer()
+        self.timer = QtCore.QTimer()
+        self.timer_2 = QtCore.QTimer()
+        self.timer_3 = QtCore.QTimer()
+        self.timer_4 = QtCore.QTimer()
         self.timer.timeout.connect(self.on_timeout)
         self.timer_2.timeout.connect(self.on_timeout_2)
         self.timer_3.timeout.connect(self.on_timeout_3)
