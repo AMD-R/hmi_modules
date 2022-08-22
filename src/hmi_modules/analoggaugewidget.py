@@ -280,9 +280,9 @@ class QRoundProgressBar(QWidget):
         self.update()
 
     def rebuildDataBrushIfNeeded(self):
-        if any(not self.m_rebuildBrush,
+        if any((not self.m_rebuildBrush,
                not self.m_gradientData,
-               self.m_barStyle == self.BarStyle.LINE):
+               self.m_barStyle == self.BarStyle.LINE)):
             return
         self.m_rebuildBrush = False
         p = self.palette()
