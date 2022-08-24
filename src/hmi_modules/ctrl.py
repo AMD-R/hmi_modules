@@ -35,7 +35,11 @@ class Ui_ControlWindow(QtWidgets.QWidget):
         self.myQuit.setGeometry(QtCore.QRect(0, 0, 181, 81))
         font = QtGui.QFont()
         font.setPointSize(20)
-        self.myQuit.setFont(font)
+        quit_icon = QtGui.QIcon()
+        quit_icon.addPixmap(QtGui.QPixmap(":/newicon/icons/exit.png"),
+                            QtGui.QIcon.Normal, QtGui.QIcon.On)
+        self.myQuit.setIcon(quit_icon)
+        self.myQuit.setIconSize(QtCore.QSize(125, 125))
         self.myQuit.setObjectName("myQuit")
 
         # Button to move AMD-R forward
