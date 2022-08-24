@@ -3,7 +3,7 @@ import rospy
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import sys
-from tokenize import String
+from std_msgs.msg import String
 
 from geometry_msgs.msg import Twist
 
