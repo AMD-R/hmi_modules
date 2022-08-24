@@ -9,7 +9,7 @@ from geometry_msgs.msg import Twist
 
 
 class Ui_ControlWindow(QtWidgets.QWidget):
-    quitted: QtCore.PYQT_SIGNAL = QtCore.pyqtSignal()
+    quitted = QtCore.pyqtSignal()
 
     def __init__(self, parent: QtWidgets.QWidget = None):
         super().__init__(parent)
